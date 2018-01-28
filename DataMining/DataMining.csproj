@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="Apriori.cs" />
     <Compile Include="KMeans.cs" />
+    <Compile Include="NativeBayes.cs" />
     <Compile Include="KNN.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

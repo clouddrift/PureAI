@@ -52,6 +52,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="AprioriUnitTests.cs" />
+    <Compile Include="NativeBayesUnitTests.cs" />
     <Compile Include="KNNUnitTests.cs" />
     <Compile Include="PageRankUnitTests.cs" />
     <Compile Include="KMeansUnitTests.cs" />
