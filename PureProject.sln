@@ -1,10 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2024
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PureProject", "PureProject\PureProject.csproj", "{15F45D9F-F602-4EED-9E77-9D9515433678}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataMining", "DataMining\DataMining.csproj", "{312CDBDF-6E87-4263-B878-A1E7D64F3A5B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataMiningUnitTests", "DataMiningUnitTests\DataMiningUnitTests.csproj", "{30CCA2F2-4B78-4395-8E9E-26A1861E9723}"
@@ -27,10 +25,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{15F45D9F-F602-4EED-9E77-9D9515433678}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{15F45D9F-F602-4EED-9E77-9D9515433678}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{15F45D9F-F602-4EED-9E77-9D9515433678}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{15F45D9F-F602-4EED-9E77-9D9515433678}.Release|Any CPU.Build.0 = Release|Any CPU
 		{312CDBDF-6E87-4263-B878-A1E7D64F3A5B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{312CDBDF-6E87-4263-B878-A1E7D64F3A5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{312CDBDF-6E87-4263-B878-A1E7D64F3A5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -56,11 +50,13 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{15F45D9F-F602-4EED-9E77-9D9515433678} = {5B536C40-7861-4236-AE16-E0F83F3745D3}
 		{312CDBDF-6E87-4263-B878-A1E7D64F3A5B} = {8E369D89-70CB-45DA-9331-E29CFBE718C6}
 		{30CCA2F2-4B78-4395-8E9E-26A1861E9723} = {5B536C40-7861-4236-AE16-E0F83F3745D3}
 		{F3DFDA76-CC59-41F7-A7B4-78CE857D016A} = {8E369D89-70CB-45DA-9331-E29CFBE718C6}
 		{159B53C2-62CD-4468-9DAD-84B9363E57E6} = {8E369D89-70CB-45DA-9331-E29CFBE718C6}
 		{5469E6A0-EAAB-4718-919F-995972D5F941} = {7151C74D-64A4-468E-82EE-0F33761C9A3D}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A630E2D0-B5E9-42EC-9532-74E240A8AF86}
 	EndGlobalSection
 EndGlobal
