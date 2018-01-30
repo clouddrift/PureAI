@@ -76,7 +76,7 @@ namespace Pure.DataMining.UnitTests
 
             var result = bayes.Perform(testProperties);
             Assert.AreEqual(true, result.Target);
-            Assert.AreEqual(0.028, result.Probability, 0.001);
+            Assert.AreEqual(0.028, result.JointProbability, 0.001);
         }
     }
 }

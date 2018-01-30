@@ -1,144 +1,73 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Pure.DataMining
 {
-    public sealed class NativeBayesResult<TTarget>
-    {
-        public TTarget Target
-        {
-            get;
-        }
-
-        public double Probability
-        {
-            get;
-        }
-
-        internal NativeBayesResult(TTarget target, double probability)
-        {
-            this.Target = target;
-            this.Probability = probability;
-        }
-    }
-
     public class NativeBayes<TProperty, TTarget>
     {
-        private List<TTarget> targetItems;
-        private Dictionary<string, NativeBayesProperty<TProperty, TTarget>> propertyItems;
+        private List<TTarget> targets;
+        private Dictionary<string, NativeBayesProperty<TProperty, TTarget>> properties;
 
         internal int TargetCount
         {
-            get { return this.targetItems.Count; }
+            get { return this.targets.Count; }
         }
 
         public NativeBayes(params TTarget[] targets)
         {
-            this.targetItems = targets.ToList();
-            this.propertyItems = new Dictionary<string, NativeBayesProperty<TProperty, TTarget>>();
+            this.targets = targets.ToList();
+            this.properties = new Dictionary<string, NativeBayesProperty<TProperty, TTarget>>();
         }
 
         public NativeBayesProperty<TProperty, TTarget> AddProperty(string name)
         {
             var property = new NativeBayesProperty<TProperty, TTarget>(this);
-            propertyItems.Add(name, property);
+            properties.Add(name, property);
             return property;
         }
 
-        public NativeBayesResult<TTarget> Perform(IDictionary<string, TProperty> input)
+        public NativeBayesResult<TTarget> Perform(IDictionary<string, TProperty> inputProperties)
         {
-            if (input.Count > propertyItems.Count)
+            if (inputProperties.Count > properties.Count)
             {
                 throw new ArgumentException();
             }
 
             TTarget target = default(TTarget);
-            double probability = 0.0;
+            double maxJointProbability = 0.0;
 
-            for (int targetIndex = 0; targetIndex < targetItems.Count; targetIndex++)
+            for (int targetIndex = 0; targetIndex < targets.Count; targetIndex++)
             {
-                double targetProbability = 1.0;
+                double posteriorProbability = 1.0;
 
-                foreach (var pair in input)
+                foreach (var inputPropertyPair in inputProperties)
                 {
-                    NativeBayesProperty<TProperty, TTarget> propertyItem;
-                    bool result = propertyItems.TryGetValue(pair.Key, out propertyItem);
+                    NativeBayesProperty<TProperty, TTarget> property;
 
-                    if (result)
+                    if (properties.TryGetValue(inputPropertyPair.Key, out property))
                     {
-                        double percentage = propertyItem.GetPropertyPercentage(pair.Value, targetIndex);
-                        targetProbability *= percentage;
+                        double subProbability = property.GetCount(inputPropertyPair.Value, targetIndex) / property.GetCount(targetIndex);
+                        posteriorProbability *= subProbability;
                     }
                     else
                     {
-                        throw new ArgumentException();
+                        string message = string.Format("Input property '{0}' is invalid.", inputPropertyPair.Key);
+                        throw new ArgumentException(message);
                     }
                 }
 
-                double aa = propertyItems.Sum(o => o.Value.GetTotalCount(targetIndex)) / propertyItems.Sum(o => o.Value.GetTotalCount());
-                targetProbability *= aa;
+                double targetProbability = properties.Sum(o => o.Value.GetCount(targetIndex)) / properties.Sum(o => o.Value.GetCount());
+                double curJointProbability = posteriorProbability * targetProbability;
 
-                if (probability < targetProbability)
+                if (maxJointProbability < curJointProbability)
                 {
-                    probability = targetProbability;
-                    target = targetItems[targetIndex];
+                    maxJointProbability = curJointProbability;
+                    target = targets[targetIndex];
                 }
             }
 
-            return new NativeBayesResult<TTarget>(target, probability);
-        }
-    }
-
-    public class NativeBayesProperty<TProperty, TTarget>
-    {
-        private NativeBayes<TProperty, TTarget> parent;
-        private Dictionary<TProperty, IList<int>> propertyItems;
-        private IList<int> totalCounters;
-
-        public ReadOnlyDictionary<TProperty, IList<int>> PropertyItems
-        {
-            get { return new ReadOnlyDictionary<TProperty, IList<int>>(propertyItems); }
-        }
-
-        internal NativeBayesProperty(NativeBayes<TProperty, TTarget> parent)
-        {
-            this.propertyItems = new Dictionary<TProperty, IList<int>>();
-            this.totalCounters = Enumerable.Repeat(0, parent.TargetCount).ToList();
-            this.parent = parent;
-        }
-
-        public void AddPropertyItem(TProperty item, params int[] counters)
-        {
-            if (this.parent.TargetCount != counters.Length)
-            {
-                throw new ArgumentException();
-            }
-
-            this.propertyItems.Add(item, counters);
-
-            for (int i = 0; i < this.parent.TargetCount; i++)
-            {
-                this.totalCounters[i] += counters[i];
-            }
-        }
-
-        public double GetPropertyPercentage(TProperty property, int targetIndex)
-        {
-            return PropertyItems[property][targetIndex] * 1.0 / totalCounters[targetIndex];
-        }
-
-        public double GetTotalCount(int targetIndex)
-        {
-            return totalCounters[targetIndex];
-        }
-
-        public double GetTotalCount()
-        {
-            return totalCounters.Sum();
+            return new NativeBayesResult<TTarget>(target, maxJointProbability);
         }
     }
 }

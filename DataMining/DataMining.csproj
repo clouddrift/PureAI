@@ -45,6 +45,8 @@
     <Compile Include="KMeans.cs" />
     <Compile Include="NativeBayes.cs" />
     <Compile Include="KNN.cs" />
+    <Compile Include="NativeBayesProperty.cs" />
+    <Compile Include="NativeBayesResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
