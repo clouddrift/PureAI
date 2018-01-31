@@ -35,11 +35,11 @@ namespace Pure.DataMining
             }
 
             TTarget target = default(TTarget);
-            double maxJointProbability = 0.0;
+            double maxJoint = 0.0;
 
             for (int targetIndex = 0; targetIndex < targets.Count; targetIndex++)
             {
-                double posteriorProbability = 1.0;
+                double likelihood = 1.0;
 
                 foreach (var inputPropertyPair in inputProperties)
                 {
@@ -47,8 +47,8 @@ namespace Pure.DataMining
 
                     if (properties.TryGetValue(inputPropertyPair.Key, out property))
                     {
-                        double subProbability = property.GetCount(inputPropertyPair.Value, targetIndex) / property.GetCount(targetIndex);
-                        posteriorProbability *= subProbability;
+                        double subLikelihood = property.GetCount(inputPropertyPair.Value, targetIndex) / property.GetCount(targetIndex);
+                        likelihood *= subLikelihood;
                     }
                     else
                     {
@@ -57,17 +57,17 @@ namespace Pure.DataMining
                     }
                 }
 
-                double targetProbability = properties.Sum(o => o.Value.GetCount(targetIndex)) / properties.Sum(o => o.Value.GetCount());
-                double curJointProbability = posteriorProbability * targetProbability;
+                double prior = properties.Sum(o => o.Value.GetCount(targetIndex)) / properties.Sum(o => o.Value.GetCount());
+                double curJoint = likelihood * prior;
 
-                if (maxJointProbability < curJointProbability)
+                if (maxJoint < curJoint)
                 {
-                    maxJointProbability = curJointProbability;
+                    maxJoint = curJoint;
                     target = targets[targetIndex];
                 }
             }
 
-            return new NativeBayesResult<TTarget>(target, maxJointProbability);
+            return new NativeBayesResult<TTarget>(target, maxJoint);
         }
     }
 }
