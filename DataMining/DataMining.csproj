@@ -41,6 +41,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IAdaBootModel.cs" />
+    <Compile Include="AdaBoost.cs" />
     <Compile Include="Apriori.cs" />
     <Compile Include="KMeans.cs" />
     <Compile Include="NativeBayes.cs" />

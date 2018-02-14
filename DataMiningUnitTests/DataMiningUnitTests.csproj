@@ -51,6 +51,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="AdaBoostUnitTests.cs" />
     <Compile Include="AprioriUnitTests.cs" />
     <Compile Include="NativeBayesUnitTests.cs" />
     <Compile Include="KNNUnitTests.cs" />
